@@ -92,6 +92,13 @@ the brand changes — don't hand-edit the PNGs. Components: `components/site/log
   Pinned `next` bumped 15.5.4 → **15.5.7**, the patched release for the 15.5
   line. `react`/`react-dom` moved to `^19.1.0` so patches flow through.
   Redeploy after `npm install` regenerates the lockfile.
+- **Gotcha — every route 404'd on Vercel despite a clean build.** The project
+  was originally created by an MCP `deploy_to_vercel` call for a static HTML
+  preview, which set `framework: null`. The later GitHub import reused that
+  project and inherited the setting, so Vercel served the Next.js build as a
+  plain static directory — no routes, no lambdas. Fixed by committing a
+  `vercel.json` with `"framework": "nextjs"`, which overrides Project Settings
+  from code. Keep that file; deleting it re-exposes the bug.
 - Outstanding: recharts 2.x is deprecated upstream (warning only, not
   blocking). v3 is a breaking migration — schedule it, don't rush it.
 
